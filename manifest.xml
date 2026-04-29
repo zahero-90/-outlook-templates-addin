@@ -34,7 +34,6 @@
     <Form xsi:type="ItemEdit">
       <DesktopSettings>
         <SourceLocation DefaultValue="https://zahero-90.github.io/-outlook-templates-addin/src/taskpane.html" />
-        <RequestedHeight>550</RequestedHeight>
       </DesktopSettings>
     </Form>
   </FormSettings>
