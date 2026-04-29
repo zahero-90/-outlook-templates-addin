@@ -1,0 +1,16 @@
+{
+  "routes": [
+    {
+      "route": "/*",
+      "allowedRoles": ["anonymous"]
+    }
+  ],
+  "mimeTypes": {
+    ".png":  "image/png",
+    ".html": "text/html",
+    ".js":   "application/javascript",
+    ".css":  "text/css",
+    ".xml":  "application/xml",
+    ".json": "application/json"
+  }
+}

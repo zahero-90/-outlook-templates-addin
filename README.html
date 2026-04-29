@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Email Templates – Deployment Guide</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; background: #f4f6fb; color: #222; padding: 28px 16px; }
+.page { max-width: 900px; margin: 0 auto; }
+
+/* Header */
+.hero {
+  background: linear-gradient(135deg, #005a9e 0%, #0078d4 60%, #00b4d8 100%);
+  border-radius: 10px;
+  padding: 30px 34px;
+  color: white;
+  margin-bottom: 26px;
+}
+.hero h1 { font-size: 26px; margin-bottom: 8px; font-weight: 700; }
+.hero p  { opacity: .85; font-size: 14.5px; line-height: 1.6; max-width: 600px; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.hero-badge { background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.35); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 600; }
+
+/* Compare table */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 26px; }
+@media(max-width:600px){.compare-grid{grid-template-columns:1fr;}}
+.compare-card { background: white; border: 2px solid #e0e5ef; border-radius: 8px; padding: 18px 20px; }
+.compare-card.recommended { border-color: #0078d4; }
+.compare-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.recommend-badge { background: #0078d4; color: white; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; letter-spacing: .4px; }
+.compare-sub { font-size: 12px; color: #605e5c; margin-bottom: 10px; }
+.pros-list { list-style: none; }
+.pros-list li { padding: 3px 0; font-size: 12.5px; }
+.pros-list li::before { content: '✓ '; color: #107c10; font-weight: 700; }
+.pros-list li.con::before { content: '✕ '; color: #a4262c; }
+
+/* Cards */
+.card { background: white; border-radius: 8px; border: 1px solid #e0e5ef; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,.05); }
+.card h2 { font-size: 16.5px; color: #0078d4; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.step-badge { background: #0078d4; color: white; border-radius: 50%; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 700; flex-shrink: 0; }
+
+ol.steps { list-style: none; counter-reset: step; }
+ol.steps li { counter-increment: step; padding: 9px 0 9px 30px; position: relative; border-bottom: 1px solid #f0f3f8; line-height: 1.6; font-size: 13.5px; }
+ol.steps li:last-child { border-bottom: none; }
+ol.steps li::before { content: counter(step); position: absolute; left: 0; top: 10px; background: #eef2ff; color: #0078d4; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+
+code { background: #eef2ff; color: #1a1a6e; padding: 2px 7px; border-radius: 4px; font-family: Consolas, monospace; font-size: 12.5px; }
+pre { background: #1e1e2e; color: #cdd6f4; border-radius: 6px; padding: 16px; font-family: Consolas, monospace; font-size: 12.5px; overflow-x: auto; line-height: 1.6; margin: 10px 0; }
+pre .c  { color: #6c7086; }
+pre .k  { color: #89b4fa; }
+pre .s  { color: #a6e3a1; }
+pre .v  { color: #f38ba8; }
+
+.note  { background: #fff8e1; border-left: 4px solid #f5a623; padding: 11px 14px; border-radius: 0 5px 5px 0; margin: 10px 0; font-size: 13px; line-height: 1.5; }
+.good  { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 11px 14px; border-radius: 0 5px 5px 0; margin: 10px 0; font-size: 13px; line-height: 1.5; }
+.info  { background: #e3f2fd; border-left: 4px solid #1976d2; padding: 11px 14px; border-radius: 0 5px 5px 0; margin: 10px 0; font-size: 13px; line-height: 1.5; }
+
+/* Tabs */
+.tabs { display: flex; border-bottom: 2px solid #e0e5ef; margin-bottom: 18px; }
+.tab { padding: 9px 18px; font-size: 13px; font-weight: 600; cursor: pointer; color: #605e5c; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+.tab.active { color: #0078d4; border-bottom-color: #0078d4; }
+
+/* Hosting cards */
+.host-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+@media(max-width:700px){.host-grid{grid-template-columns:1fr;}}
+.host-card { border: 1px solid #e0e5ef; border-radius: 7px; padding: 16px; }
+.host-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.host-free { font-size: 11px; color: #107c10; font-weight: 700; background: #e8f5e9; border-radius: 3px; padding: 1px 6px; margin-left: 5px; }
+.host-desc { font-size: 12px; color: #605e5c; line-height: 1.5; margin-top: 5px; }
+
+/* Admin screenshot mockup */
+.admin-mockup {
+  background: white;
+  border: 1px solid #d2d0ce;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 12px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+.admin-bar {
+  background: #0078d4;
+  padding: 8px 14px;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.admin-content { padding: 16px; }
+.admin-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f3f8; font-size: 13px; }
+.admin-row:last-child { border-bottom: none; }
+.admin-icon { width: 32px; height: 32px; background: #0078d4; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; flex-shrink: 0; }
+.admin-info { flex: 1; }
+.admin-name { font-weight: 600; }
+.admin-sub  { font-size: 11.5px; color: #605e5c; margin-top: 2px; }
+.admin-status { font-size: 11.5px; background: #e8f5e9; color: #107c10; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+
+/* Architecture diagram */
+.arch-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 20px 10px;
+  background: #f8f9fc;
+  border-radius: 8px;
+  border: 1px solid #e0e5ef;
+  flex-wrap: wrap;
+  row-gap: 12px;
+}
+.arch-box { background: white; border: 1.5px solid #c8d6e8; border-radius: 7px; padding: 10px 14px; text-align: center; min-width: 90px; }
+.arch-box .ab-icon { font-size: 22px; margin-bottom: 4px; }
+.arch-box .ab-label { font-size: 11px; font-weight: 600; color: #0078d4; }
+.arch-box .ab-sub { font-size: 10px; color: #a19f9d; margin-top: 2px; }
+.arch-arrow { font-size: 20px; color: #a19f9d; padding: 0 6px; }
+
+/* File structure */
+.file-tree { font-family: Consolas, monospace; font-size: 12.5px; background: #1e1e2e; color: #cdd6f4; padding: 16px; border-radius: 6px; line-height: 1.8; }
+.ft-folder { color: #89b4fa; }
+.ft-file   { color: #cba6f7; }
+.ft-comment{ color: #6c7086; }
+
+/* Outlook ribbon mockup */
+.ribbon-mock {
+  background: #0078d4;
+  border-radius: 6px 6px 0 0;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.ribbon-tab { padding: 5px 12px; border-radius: 4px; font-size: 12px; color: rgba(255,255,255,.75); }
+.ribbon-tab.active { background: white; color: #0078d4; font-weight: 600; }
+.ribbon-body { background: white; border: 1px solid #d2d0ce; border-top: none; border-radius: 0 0 6px 6px; padding: 10px 14px; display: flex; align-items: center; gap: 20px; }
+.ribbon-group { text-align: center; }
+.ribbon-btn {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 5px 10px; border: 1px solid #c8d6e8; border-radius: 4px; background: #eef4fb; cursor: pointer;
+}
+.ribbon-btn-icon { font-size: 22px; }
+.ribbon-btn-label { font-size: 10px; font-weight: 600; color: #201f1e; }
+.ribbon-btn.highlight { border-color: #0078d4; background: #deecf9; }
+
+table.compat { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.compat th { background: #0078d4; color: white; padding: 8px 12px; text-align: left; }
+table.compat td { padding: 7px 12px; border-bottom: 1px solid #e5eaf2; }
+table.compat tr:nth-child(even) td { background: #f7f9fd; }
+
+footer { text-align: center; color: #888; font-size: 12px; margin-top: 28px; padding: 12px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <h1>📧 My Email Templates — Outlook Web Add-in</h1>
+    <p>A proper Office COM-class add-in built using the official Microsoft Office Web Add-in standard.
+       Deploys exactly like Adobe Sign, DocuSign, or Nitro PDF — as a registered add-in with a ribbon button,
+       manageable from Outlook's Add-ins settings.</p>
+    <div class="hero-badges">
+      <span class="hero-badge">✓ Office Web Add-in Standard</span>
+      <span class="hero-badge">✓ Ribbon Button (Compose + Reply)</span>
+      <span class="hero-badge">✓ M365 Admin Center Deployment</span>
+      <span class="hero-badge">✓ Sideload Per User</span>
+      <span class="hero-badge">✓ Signature Preserved</span>
+      <span class="hero-badge">✓ Unlimited Templates</span>
+    </div>
+  </div>
+
+  <!-- How it compares -->
+  <div class="card">
+    <h2>⚖️ COM Add-in vs Office Web Add-in — What's the Difference?</h2>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-title">🔧 COM Add-in (VSTO)</div>
+        <div class="compare-sub">e.g. Adobe Acrobat PDF Maker, older Nitro</div>
+        <ul class="pros-list">
+          <li>Deep Windows integration</li>
+          <li>Accesses local file system</li>
+          <li class="con">Requires .NET / Visual Studio to build</li>
+          <li class="con">Must be installed per machine (MSI/EXE)</li>
+          <li class="con">Cannot be deployed via M365 Admin Center</li>
+          <li class="con">Breaks on major Outlook updates</li>
+          <li class="con">Desktop Outlook only</li>
+        </ul>
+      </div>
+      <div class="compare-card recommended">
+        <div class="compare-title">🌐 Office Web Add-in <span class="recommend-badge">RECOMMENDED</span></div>
+        <div class="compare-sub">e.g. Adobe Sign, DocuSign, Nitro (new versions)</div>
+        <ul class="pros-list">
+          <li>Works on Desktop, Web, Mobile</li>
+          <li>Deploy to ALL users via M365 Admin Center</li>
+          <li>Appears in Outlook Add-ins list (enable/disable)</li>
+          <li>Ribbon button — same as Adobe/DocuSign</li>
+          <li>Microsoft-supported standard (future-proof)</li>
+          <li>No machine-level installation needed</li>
+          <li class="con">Requires HTTPS hosting for the add-in files</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info">ℹ️ <strong>This add-in is built as an Office Web Add-in</strong> — the same technology that Adobe Sign, DocuSign, Grammarly, and the new Nitro use. It is the current Microsoft standard for all new Outlook integrations.</div>
+  </div>
+
+  <!-- Architecture -->
+  <div class="card">
+    <h2>🏗️ How It Works</h2>
+    <div class="arch-diagram">
+      <div class="arch-box"><div class="ab-icon">🌐</div><div class="ab-label">HTTPS Host</div><div class="ab-sub">GitHub Pages<br>/ Azure / SharePoint</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box"><div class="ab-icon">📄</div><div class="ab-label">manifest.xml</div><div class="ab-sub">Registered in<br>Outlook / M365</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box"><div class="ab-icon">🪟</div><div class="ab-label">Task Pane</div><div class="ab-sub">Loads inside<br>Outlook window</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box"><div class="ab-icon">💾</div><div class="ab-label">OfficeRuntime<br>Storage</div><div class="ab-sub">Per-user persistent<br>template store</div></div>
+    </div>
+    <br>
+    <div class="file-tree">
+<span class="ft-folder">MyTemplatesAddin/</span>
+├── <span class="ft-file">manifest.xml</span>          <span class="ft-comment">&lt;— upload to M365 Admin Center or sideload</span>
+├── <span class="ft-folder">src/</span>
+│   ├── <span class="ft-file">taskpane.html</span>     <span class="ft-comment">&lt;— the add-in UI (task pane)</span>
+│   ├── <span class="ft-file">taskpane.js</span>       <span class="ft-comment">&lt;— all template & insertion logic</span>
+│   ├── <span class="ft-file">taskpane.css</span>      <span class="ft-comment">&lt;— Fluent UI / Office styling</span>
+│   └── <span class="ft-file">commands.html</span>     <span class="ft-comment">&lt;— ribbon function handler</span>
+└── <span class="ft-folder">assets/</span>
+    ├── <span class="ft-file">icon-16.png</span>
+    ├── <span class="ft-file">icon-32.png</span>
+    ├── <span class="ft-file">icon-64.png</span>
+    └── <span class="ft-file">icon-80.png</span>
+    </div>
+  </div>
+
+  <!-- What it looks like in Outlook -->
+  <div class="card">
+    <h2>🖥️ What It Looks Like in Outlook</h2>
+    <p style="color:#605e5c;margin-bottom:14px;">A <strong>My Templates</strong> button appears in the compose and reply toolbar, exactly like Adobe Sign or DocuSign:</p>
+    <div class="ribbon-mock">
+      <div class="ribbon-tab active">Message</div>
+      <div class="ribbon-tab">Insert</div>
+      <div class="ribbon-tab">Options</div>
+    </div>
+    <div class="ribbon-body">
+      <div class="ribbon-group">
+        <div class="ribbon-btn"><div class="ribbon-btn-icon">✂️</div><div class="ribbon-btn-label">Paste</div></div>
+      </div>
+      <div class="ribbon-group">
+        <div class="ribbon-btn"><div class="ribbon-btn-icon">📎</div><div class="ribbon-btn-label">Attach File</div></div>
+      </div>
+      <div style="width:1px;background:#e0e5ef;height:40px;"></div>
+      <div class="ribbon-group">
+        <div class="ribbon-btn highlight"><div class="ribbon-btn-icon">📧</div><div class="ribbon-btn-label">My Templates</div></div>
+      </div>
+      <div style="width:1px;background:#e0e5ef;height:40px;margin-left:6px;"></div>
+      <div class="ribbon-group">
+        <div class="ribbon-btn"><div class="ribbon-btn-icon">✍️</div><div class="ribbon-btn-label">Signature</div></div>
+      </div>
+    </div>
+    <br>
+    <div class="good">✅ Clicking <strong>My Templates</strong> opens the task pane on the right — just like Adobe Sign's task pane. Templates auto-insert above the signature.</div>
+  </div>
+
+  <!-- STEP 1: HOSTING -->
+  <div class="card">
+    <h2><span class="step-badge">1</span> Host the Add-in Files (Requires HTTPS)</h2>
+    <p style="color:#605e5c;margin-bottom:14px;">The add-in files must be reachable over HTTPS. Choose the option that suits your environment:</p>
+
+    <div class="host-grid">
+      <div class="host-card">
+        <div class="host-name">GitHub Pages <span class="host-free">FREE</span></div>
+        <div class="host-desc">Easiest option. Free HTTPS hosting via GitHub. Ideal for quick deployment.</div>
+      </div>
+      <div class="host-card">
+        <div class="host-name">Azure Static Web Apps <span class="host-free">FREE TIER</span></div>
+        <div class="host-desc">Microsoft's own hosting. Free tier, global CDN, connects to GitHub for auto-deploy.</div>
+      </div>
+      <div class="host-card">
+        <div class="host-name">SharePoint / SPO</div>
+        <div class="host-desc">Host the files in a SharePoint document library. Stays inside your M365 tenant.</div>
+      </div>
+    </div>
+
+    <br>
+    <strong>Option A — GitHub Pages (Recommended, Free, 5 minutes)</strong>
+    <ol class="steps" style="margin-top:10px;">
+      <li>Create a free account at <code>github.com</code> (or use an existing one)</li>
+      <li>Click <strong>+ New repository</strong> → Name it <code>my-templates-addin</code> → Set to <strong>Public</strong> → Create</li>
+      <li>Upload all files from this package, keeping the folder structure:
+        <pre>my-templates-addin/
+├── manifest.xml
+├── src/
+│   ├── taskpane.html / taskpane.js / taskpane.css / commands.html
+└── assets/
+    └── icon-16.png  icon-32.png  icon-64.png  icon-80.png</pre>
+      </li>
+      <li>Go to repository <strong>Settings → Pages → Source: Deploy from branch → main → / (root)</strong> → Save</li>
+      <li>Your hosting URL will be: <code>https://YOUR-USERNAME.github.io/my-templates-addin</code></li>
+    </ol>
+
+    <br>
+    <strong>Option B — Azure Static Web Apps</strong>
+    <ol class="steps" style="margin-top:10px;">
+      <li>Go to <a href="https://portal.azure.com" target="_blank">portal.azure.com</a> → Create resource → <strong>Static Web App</strong></li>
+      <li>Connect to your GitHub repo, choose branch <strong>main</strong></li>
+      <li>Azure auto-deploys and gives you an HTTPS URL like <code>https://agreeable-beach-12345.azurestaticapps.net</code></li>
+    </ol>
+  </div>
+
+  <!-- STEP 2: UPDATE MANIFEST -->
+  <div class="card">
+    <h2><span class="step-badge">2</span> Update manifest.xml with Your URL</h2>
+    <p style="margin-bottom:12px;">Open <code>manifest.xml</code> in Notepad and replace every occurrence of <code>https://YOUR-DOMAIN.com/addin</code> with your actual URL.</p>
+
+    <strong>Find → Replace All:</strong>
+    <pre><span class="c">Find:</span>    <span class="v">https://YOUR-DOMAIN.com/addin</span>
+<span class="c">Replace:</span> <span class="s">https://YOUR-USERNAME.github.io/my-templates-addin</span>
+<span class="c">         (or your Azure / SharePoint URL)</span></pre>
+
+    <div class="note">⚠️ There are <strong>8 places</strong> in the manifest that reference this URL. Make sure they are all updated before proceeding.</div>
+    <div class="note">⚠️ The URL must be <strong>HTTPS</strong>. HTTP will not work. Outlook enforces this for all add-in files.</div>
+  </div>
+
+  <!-- STEP 3: DEPLOY (Admin Center) -->
+  <div class="card">
+    <h2><span class="step-badge">3A</span> Deploy to All Users via M365 Admin Center</h2>
+    <p style="color:#605e5c;margin-bottom:14px;">This deploys the add-in to your entire tenant automatically. Users do not need to do anything.</p>
+
+    <div class="admin-mockup">
+      <div class="admin-bar">⚙️ Microsoft 365 Admin Center — Integrated Apps</div>
+      <div class="admin-content">
+        <div class="admin-row">
+          <div class="admin-icon">📧</div>
+          <div class="admin-info">
+            <div class="admin-name">My Email Templates</div>
+            <div class="admin-sub">Priority Worldwide IT · Outlook · All users</div>
+          </div>
+          <div class="admin-status">Deployed</div>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li>Go to <code>admin.microsoft.com</code> and sign in as a Global Admin</li>
+      <li>In the left menu: <strong>Settings → Integrated apps</strong></li>
+      <li>Click <strong>Upload custom apps</strong></li>
+      <li>Choose <strong>Office Add-in</strong> as the app type</li>
+      <li>Select <strong>"Upload manifest file (.xml) from device"</strong></li>
+      <li>Browse and select your updated <code>manifest.xml</code></li>
+      <li>Click <strong>Next</strong></li>
+      <li>Under <strong>Assign users</strong>, choose:
+        <ul style="margin-top:6px;margin-left:20px;">
+          <li><strong>Entire organization</strong> — deploys to all users ✓</li>
+          <li>or specific users/groups</li>
+        </ul>
+      </li>
+      <li>Click <strong>Next → Finish deployment</strong></li>
+      <li>The add-in appears in Outlook for all assigned users within <strong>24 hours</strong> (usually within minutes)</li>
+    </ol>
+
+    <div class="good">✅ Users will see <strong>My Templates</strong> in their Outlook ribbon automatically — no action required from them. It appears in <strong>Get Add-ins → Admin-managed</strong> and is shown as a pinned ribbon button.</div>
+  </div>
+
+  <!-- STEP 3B: SIDELOAD -->
+  <div class="card">
+    <h2><span class="step-badge">3B</span> Install Per User (Sideload — No Admin Required)</h2>
+    <p style="color:#605e5c;margin-bottom:14px;">Each user can install the add-in themselves from their Outlook. No IT/admin access needed.</p>
+
+    <strong>Outlook Desktop (Windows):</strong>
+    <ol class="steps">
+      <li>Open Outlook → Click <strong>Get Add-ins</strong> (in the Home ribbon, or File → Manage Add-ins)</li>
+      <li>In the Add-ins dialog, click <strong>My add-ins</strong> (left sidebar)</li>
+      <li>Scroll to the bottom → Click <strong>+ Add a custom add-in</strong> → <strong>Add from file…</strong></li>
+      <li>Select your <code>manifest.xml</code> file → Click <strong>Open</strong></li>
+      <li>Click <strong>Install</strong> on the warning dialog</li>
+      <li>The add-in is now installed. Close the dialog.</li>
+      <li>Open a new email — the <strong>My Templates</strong> button appears in the ribbon.</li>
+    </ol>
+
+    <br>
+    <strong>Outlook Web App (OWA — outlook.office.com):</strong>
+    <ol class="steps">
+      <li>Compose a new email → click the <strong>⋯ More apps</strong> button in the compose toolbar</li>
+      <li>Click <strong>Get Add-ins</strong></li>
+      <li>Click <strong>My add-ins</strong> → <strong>+ Add a custom add-in</strong> → <strong>Add from URL</strong></li>
+      <li>Enter the direct URL to your manifest.xml, e.g. <code>https://your-github.io/my-templates-addin/manifest.xml</code></li>
+      <li>Click <strong>OK → Install</strong></li>
+    </ol>
+  </div>
+
+  <!-- Enable / Disable -->
+  <div class="card">
+    <h2>🔘 Enable / Disable (Like Adobe PDF Add-in)</h2>
+    <p style="margin-bottom:12px;">Users can enable or disable the add-in from Outlook's <strong>Manage Add-ins</strong> page — the same place where Adobe Acrobat, Grammarly, and other add-ins are managed:</p>
+    <ol class="steps">
+      <li>In Outlook: <strong>File → Manage Add-ins</strong> (or <strong>Get Add-ins → My add-ins</strong>)</li>
+      <li>Find <strong>My Email Templates</strong> in the list</li>
+      <li>Toggle the checkbox to <strong>enable or disable</strong> it</li>
+      <li>Or click the <strong>⋯</strong> menu next to it → <strong>Remove</strong> to uninstall</li>
+    </ol>
+    <div class="info">ℹ️ If deployed via M365 Admin Center, individual users can still disable it for themselves, but admins control whether it can be fully removed.</div>
+  </div>
+
+  <!-- Compatibility -->
+  <div class="card">
+    <h2>📱 Compatibility</h2>
+    <table class="compat">
+      <tr><th>Platform</th><th>Support</th><th>Notes</th></tr>
+      <tr><td>Outlook Desktop (Windows)</td><td>✅ Full support</td><td>Ribbon button + task pane</td></tr>
+      <tr><td>Outlook on the Web (OWA)</td><td>✅ Full support</td><td>Toolbar button + task pane</td></tr>
+      <tr><td>Outlook Desktop (Mac)</td><td>✅ Full support</td><td>Ribbon button + task pane</td></tr>
+      <tr><td>Outlook Mobile (iOS/Android)</td><td>⚠️ Task pane (no ribbon)</td><td>Accessible via ⋯ More options</td></tr>
+      <tr><td>New Outlook (Windows)</td><td>✅ Full support</td><td>Same as OWA</td></tr>
+    </table>
+  </div>
+
+  <!-- Template storage -->
+  <div class="card">
+    <h2>💾 How Templates Are Stored</h2>
+    <p style="margin-bottom:12px;">Templates are stored using <strong>OfficeRuntime.storage</strong> — Microsoft's persistent, per-user storage API for Office add-ins. This is:</p>
+    <ul style="margin-left:18px;line-height:2;font-size:13.5px;">
+      <li>Stored locally on the user's machine, tied to their Windows/Office profile</li>
+      <li>Persists across Outlook restarts and Windows reboots</li>
+      <li>Not deleted when the add-in is disabled (only when uninstalled + data cleared)</li>
+      <li>Up to <strong>10 MB</strong> of template data per user (thousands of templates)</li>
+      <li>Export feature available inside the add-in (ℹ️ button → Export All Templates)</li>
+    </ul>
+    <div class="note">💡 Unlike the VBA approach, this storage is managed by Office and does not require AppData folder access or file permissions.</div>
+  </div>
+
+  <!-- Troubleshooting -->
+  <div class="card">
+    <h2>🔧 Troubleshooting</h2>
+    <table class="compat">
+      <tr><th>Issue</th><th>Solution</th></tr>
+      <tr><td>Add-in doesn't appear after sideloading</td><td>Close and reopen Outlook. Check Manage Add-ins to verify it's enabled.</td></tr>
+      <tr><td>Task pane shows blank / error loading</td><td>Verify your HTTPS URL is correct in manifest.xml and the files are publicly accessible</td></tr>
+      <tr><td>"We can't open this add-in" error</td><td>The URL in manifest.xml is not reachable or not HTTPS. Re-check your hosting URL.</td></tr>
+      <tr><td>Ribbon button missing in reply window</td><td>The manifest includes both compose and reply surfaces. Restart Outlook.</td></tr>
+      <tr><td>Insert fails with "no email found"</td><td>Only works in compose/reply windows, not in the reading pane.</td></tr>
+      <tr><td>M365 Admin deployment not appearing</td><td>Wait up to 24 hours. Check deployment status in Admin Center → Integrated apps.</td></tr>
+    </table>
+  </div>
+
+  <footer>My Email Templates — Office Web Add-in v1.0 &nbsp;|&nbsp; Priority Worldwide IT &nbsp;|&nbsp; Built to Microsoft Office Add-in standards</footer>
+</div>
+</body>
+</html>
